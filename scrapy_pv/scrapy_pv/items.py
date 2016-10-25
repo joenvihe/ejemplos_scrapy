@@ -5,10 +5,27 @@
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy.item import Item, Field
 
 
-class ScrapyPvItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class ScrapyPvItem(Item):
+    # Primary fields
+    principal = Field()  # principal
+    categoria = Field()  # categoria
+    subcategoria = Field() # subcategoria
+    tipo = Field() # tipo
+    titulo = Field() # titulo
+    brand = Field() # brand
+    codigo_producto = Field() # Código de producto web.
+    imagen = Field() # imagen
+    estrellas = Field() # estrela)
+    especificacion = Field() # especificacion
+    mejor_precio = Field() # mejor precio
+    precio_normal = Field() # Precio Normal
+
+    # Housekeeping fields
+    url = Field()
+    project = Field()
+    spider = Field()
+    server = Field()
+    date = Field()
