@@ -22,7 +22,8 @@ class ScrapyPvItem(Item):
     especificacion = Field() # especificacion
     mejor_precio = Field() # mejor precio
     precio_normal = Field() # Precio Normal
-
+    unidad = Field()
+    promocion = Field()
     # Housekeeping fields
     url = Field()
     project = Field()

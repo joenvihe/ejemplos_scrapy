@@ -24,18 +24,19 @@ class BotPvSpider(CrawlSpider):
         # self.log("ENTRO PARSE 1:%s" % response.url)
         meta = response.xpath('//section[@class="main-departament"]/*/*/a[1]/@href')
         for m in meta:
-            url = urlparse.urljoin(response.url, m.extract())
-            # self.log("ENTRO BUCLE PARSE 1: %s" % url)
-            # Seleccionamos la direccion
-            yield SplashRequest(
-                url,
-                self.parse_prev_lista,
-                endpoint='render.html',
-                args={
-                    'wait': 3,
-                    'timeout': 60,
-                }
-            )
+            if not m.extract():
+                url = urlparse.urljoin(response.url, m.extract())
+                # self.log("ENTRO BUCLE PARSE 1: %s" % url)
+                # Seleccionamos la direccion
+                yield SplashRequest(
+                    url,
+                    self.parse_prev_lista,
+                    endpoint='render.html',
+                    args={
+                        'wait': 3,
+                        'timeout': 60,
+                    }
+                )
 
     def parse_prev_lista(self, response):
         #encuentro el script del "buscapagina"
@@ -99,6 +100,8 @@ class BotPvSpider(CrawlSpider):
         default['especificacion'] = ['']
         default['mejor_precio'] = ['']
         default['precio_normal'] = ['']
+        default['unidad'] = ['']
+        default['promocion'] = ['']
         default['url'] = ['']
         default['project'] = ['']
         default['spider'] = ['']

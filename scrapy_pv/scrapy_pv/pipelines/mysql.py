@@ -73,8 +73,9 @@ class MysqlWriter(object):
                                         tipo,titulo, brand,
                                         codigo_producto,imagen,estrellas,
                                         especificacion,mejor_precio,precio_normal,
+                                        unidad,promocion,
                                         url,project,spider,server)
-                 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+                 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
         #print(item)
         args = (
             item["principal"][0],
@@ -89,6 +90,8 @@ class MysqlWriter(object):
             item["especificacion"][0],
             item["mejor_precio"][0],
             item["precio_normal"][0],
+            item["unidad"][0],
+            item["promocion"][0],
             item["url"][0],
             item["project"][0],
             item["spider"][0],
