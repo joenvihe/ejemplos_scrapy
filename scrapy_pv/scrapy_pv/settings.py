@@ -47,7 +47,8 @@ COOKIES_ENABLED = True
 
 #scrapeando cortesmente
 USER_AGENT = 'JOENVIHE-validando precios (enrique@vicenteh.com)'
-CONCURRENT_REQUESTS_PER_DOMAIN = 32 # request concurrentes
-CONCURRENT_REQUESTS = 50 # request maximos
-AUTOTHROTTLE_ENABLED = True # regula la cantidad de request
+#CONCURRENT_REQUESTS_PER_DOMAIN = 32 # request concurrentes
+#CONCURRENT_REQUESTS = 50 # request maximos
+#AUTOTHROTTLE_ENABLED = True # regula la cantidad de request
 HTTPCACHE_ENABLED = True # verificar el cache por dia?
+HTTPCACHE_EXPIRATION_SECS = 86400 # expira el cache en 24 horoas, el tiempo es expresado en segundos

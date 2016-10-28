@@ -23,7 +23,7 @@ class BotPvSpider(CrawlSpider):
     def parse_grupo(self, response):
         meta = response.xpath('//section[@class="main-departament"]/*/*/a[1]/@href')
         for m in meta:
-            if not m.extract():
+            if m.extract():
                 url = urlparse.urljoin(response.url, m.extract())
                 # Seleccionamos la direccion
                 yield SplashRequest(
