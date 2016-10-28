@@ -39,10 +39,15 @@ ITEM_PIPELINES = {
 #MYSQL_PIPELINE_URL = 'mysql://root:pass@mysql:3306/productos'
 #MYSQL_PIPELINE_URL = 'mysql://root:pass@127.0.0.1:3306/productos'
 #MYSQL_PIPELINE_URL = 'mysql://root:pass@127.0.0.1:3306/productos2'
-MYSQL_PIPELINE_URL = 'mysql://root:Inicio_01@127.0.0.1:3306/productos'
+MYSQL_PIPELINE_URL = 'mysql://root:pass@127.0.0.1:3306/productos'
 #LOG_ENABLED = False
-#CONCURRENT_REQUESTS_PER_DOMAIN = 32
-#CONCURRENT_REQUESTS = 50
 DOWNLOAD_DELAY = 0.5    # 250 ms of delay
 COOKIES_ENABLED = True
-COOKIES_DEBUG = True
+#COOKIES_DEBUG = True
+
+#scrapeando cortesmente
+USER_AGENT = 'JOENVIHE-validando precios (enrique@vicenteh.com)'
+CONCURRENT_REQUESTS_PER_DOMAIN = 32 # request concurrentes
+CONCURRENT_REQUESTS = 50 # request maximos
+AUTOTHROTTLE_ENABLED = True # regula la cantidad de request
+HTTPCACHE_ENABLED = True # verificar el cache por dia?

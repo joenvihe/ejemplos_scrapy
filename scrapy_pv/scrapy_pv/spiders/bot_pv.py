@@ -14,19 +14,17 @@ class BotPvSpider(CrawlSpider):
     name = 'bot_pv'
     allowed_domains = ['plazavea.com.pe']
     start_urls = ['http://www.plazavea.com.pe/']
-
+    #Selecciono el menu principal
     rules = (
         Rule(LinkExtractor(restrict_xpaths='//div[@class="nav"]/div/ul/li/a', deny=('/busca/'), ),
              callback='parse_grupo'),
     )
-
+    #Selecciono el sub menu
     def parse_grupo(self, response):
-        # self.log("ENTRO PARSE 1:%s" % response.url)
         meta = response.xpath('//section[@class="main-departament"]/*/*/a[1]/@href')
         for m in meta:
             if not m.extract():
                 url = urlparse.urljoin(response.url, m.extract())
-                # self.log("ENTRO BUCLE PARSE 1: %s" % url)
                 # Seleccionamos la direccion
                 yield SplashRequest(
                     url,
@@ -37,7 +35,7 @@ class BotPvSpider(CrawlSpider):
                         'timeout': 60,
                     }
                 )
-
+    #Selecciono los valores de la lista
     def parse_prev_lista(self, response):
         #encuentro el script del "buscapagina"
         vscript = response.xpath('//div[@class="vitrine resultItemsWrapper"]/script/text()')[0].extract()
@@ -57,7 +55,7 @@ class BotPvSpider(CrawlSpider):
             yield SplashRequest(
                 url_pag,
                 self.parse_lista,
-                endpoint='render.json',
+                endpoint='render.html',
                 args={
                     'har': 1,
                     'html': 1,
@@ -66,8 +64,8 @@ class BotPvSpider(CrawlSpider):
                     'timeout': 60,
                 }
             )
-            #self.log("URL PAG.:%s" % url_pag)
 
+    # visualizco el detalle de caada producot
     def parse_lista(self, response):
         #self.log("ENTRO:%s" % response.url)
         meta = response.xpath('//a[@class="prateleira__image-link"]/@href')
@@ -88,7 +86,7 @@ class BotPvSpider(CrawlSpider):
 
     def parse_item(self, response):
         default =ScrapyPvItem()
-        default['principal'] = ['']
+        default['principal'] = ['plaza vea']
         default['categoria'] = ['']
         default['subcategoria'] = ['']
         default['tipo'] = ['']
@@ -108,8 +106,6 @@ class BotPvSpider(CrawlSpider):
         default['server'] = ['']
         l = ItemLoader(item=default, response=response)
 
-        l.add_xpath('principal', '//div[@class="bread-crumb"]/div/ul/li[1]/a/text()',
-                    MapCompose(unicode.strip, unicode.title) )
         l.add_xpath('categoria', '//div[@class="bread-crumb"]/div/ul/li[2]/a/text()',
                     MapCompose(unicode.strip, unicode.title) )
         l.add_xpath('subcategoria', '//div[@class="bread-crumb"]/div/ul/li[3]/a/text()',
