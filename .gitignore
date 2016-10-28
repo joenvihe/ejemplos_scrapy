@@ -1,2 +1,6 @@
 scrapy_pv/.scrapy/
+scrapy_pv/build/
+scrapy_pv/project.egg-info/
+scrapinghub.yml
+setup.py
 *.pyc
