@@ -78,7 +78,7 @@ class BotPvSpider(CrawlSpider):
                 args={
                     'har': 1,
                     'html': 1,
-                    'wait': 0.5,
+                    'wait': 2,
                     'images':1,
                     'timeout': 60,
                 }
