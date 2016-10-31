@@ -25,6 +25,10 @@ class BotSfSpider(CrawlSpider):
         meta = response.xpath('//ul[@class="categories"]/li/div/div/a/@href')
         for m in meta:
             url = urlparse.urljoin(response.url, m.extract())
+            yield scrapy.Request(url,
+                                 self.parse_prev_lista
+                                 )
+            """
             yield SplashRequest(
                 url,
                 self.parse_prev_lista,
@@ -34,6 +38,8 @@ class BotSfSpider(CrawlSpider):
                     'timeout': 60,
                 }
             )
+            """
+
 
 
     def parse_prev_lista(self, response):
@@ -42,6 +48,12 @@ class BotSfSpider(CrawlSpider):
         cant_pag = int(math.ceil(float(meta[0].extract()) / 6))
         # self.log("Numero Resultado: %s " % str(cant_pag))
         # Recorro la ruta de acuerdo a la cantidad de resultados
+        for j in range(cant_pag):
+            #self.log(url + str(j+1))
+            yield scrapy.Request(response.url + "&sort=2a&page=" + str(j+1),
+                                 self.parse_lista
+                                 )
+        """
         i = 1
         while i <= cant_pag:
             url_pag = response.url + "&sort=2a&page=" + str(i)
@@ -59,13 +71,17 @@ class BotSfSpider(CrawlSpider):
                     'timeout': 60,
                 }
             )
-
+        """
 
     def parse_lista(self, response):
         # self.log("ENTRO:%s" % response.url)
         meta = response.xpath('//div[@class="prods_padd"]/h2/span/a/@href')
         for m in meta:
+            yield scrapy.Request(m.extract(),
+                                 self.parse_item
+                                 )
             # self.log("URL: %s" % url_item)
+            """
             yield SplashRequest(
                 m.extract(),
                 self.parse_item,
@@ -78,7 +94,7 @@ class BotSfSpider(CrawlSpider):
                     'timeout': 60,
                 }
             )
-
+            """
 
     def parse_item(self, response):
         default = ScrapyPvItem()

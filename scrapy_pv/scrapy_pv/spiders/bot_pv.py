@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import urlparse
+import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.loader.processors import MapCompose
@@ -23,18 +24,24 @@ class BotPvSpider(CrawlSpider):
     def parse_grupo(self, response):
         meta = response.xpath('//section[@class="main-departament"]/*/*/a[1]/@href')
         for m in meta:
-            if m.extract():
-                url = urlparse.urljoin(response.url, m.extract())
-                # Seleccionamos la direccion
-                yield SplashRequest(
-                    url,
-                    self.parse_prev_lista,
-                    endpoint='render.html',
-                    args={
-                        'wait': 3,
-                        'timeout': 60,
-                    }
-                )
+            url = urlparse.urljoin(response.url, m.extract())
+            # Seleccionamos la direccion
+            yield scrapy.Request(url,
+                                 self.parse_prev_lista
+                                 )
+            """
+            yield SplashRequest(
+                url,
+                self.parse_prev_lista,
+                endpoint='render.html',
+                args={
+                    'html':1,
+                    'wait': 6,
+                    'timeout': 60,
+                }
+            )
+            """
+
     #Selecciono los valores de la lista
     def parse_prev_lista(self, response):
         #encuentro el script del "buscapagina"
@@ -46,8 +53,17 @@ class BotPvSpider(CrawlSpider):
         cant_pag = int(math.ceil(float(meta[0].extract()) / 12))
         #self.log("Numero Resultado: %s " % str(cant_pag))
         #Recorro la ruta de acuerdo a la cantidad de resultados
-        i=1
+        #i=1
         url = urlparse.urljoin(response.url, ruta)
+        #self.log(url)
+        #self.log("cantpag %s" % cant_pag)
+        for j in range(cant_pag):
+            #self.log(url + str(j+1))
+            yield scrapy.Request(url + str(j+1),
+                                 self.parse_lista
+                                 )
+
+        """
         while i <= cant_pag:
             url_pag = url + str(i)
             i = i + 1
@@ -57,18 +73,23 @@ class BotPvSpider(CrawlSpider):
                 self.parse_lista,
                 endpoint='render.html',
                 args={
-                    'har': 1,
-                    'html': 1,
-                    'wait': 0.5,
-                    'images': 1,
+                    'html':1,
+                    'wait': 6,
                     'timeout': 60,
                 }
             )
+        """
 
     # visualizco el detalle de caada producot
     def parse_lista(self, response):
         #self.log("ENTRO:%s" % response.url)
         meta = response.xpath('//a[@class="prateleira__image-link"]/@href')
+        for m in meta:
+            yield scrapy.Request(m.extract(),
+                                 self.parse_item
+                                 )
+
+        """
         for m in meta:
             #self.log("URL: %s" % url_item)
             yield SplashRequest(
@@ -83,6 +104,7 @@ class BotPvSpider(CrawlSpider):
                     'timeout': 60,
                 }
             )
+        """
 
     def parse_item(self, response):
         default =ScrapyPvItem()
