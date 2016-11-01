@@ -3,4 +3,6 @@ scrapy_pv/build/
 scrapy_pv/project.egg-info/
 scrapinghub.yml
 setup.py
+scrapy_pv/scrapy_pv/settings.py
+*.sql
 *.pyc
